@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_event'])) {
     $time = $_POST['time'];
     $location = trim($_POST['location']);
     $max_participants = $_POST['max_participants'] ?: null;
-    
+
     if (empty($title) || empty($date) || empty($time) || empty($location)) {
         $error = "Заполните все обязательные поля";
     } elseif (strtotime($date . ' ' . $time) < time()) {
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_event'])) {
         $stmt->bindValue(':location', $location);
         $stmt->bindValue(':max', $max_participants);
         $stmt->bindValue(':org', $user['id']);
-        
+
         if ($stmt->execute()) {
             $success = "Мероприятие успешно создано!";
         } else {
@@ -61,6 +61,7 @@ $totalParticipants = $db->querySingle("
 
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <title>Панель организатора</title>
@@ -75,14 +76,14 @@ $totalParticipants = $db->querySingle("
             margin-bottom: 30px;
             box-shadow: var(--shadow);
         }
-        
+
         .organizer-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 20px;
             margin: 30px 0;
         }
-        
+
         .organizer-stat {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
@@ -90,13 +91,13 @@ $totalParticipants = $db->querySingle("
             text-align: center;
             backdrop-filter: blur(10px);
         }
-        
+
         .organizer-stat-number {
             font-size: 32px;
             font-weight: bold;
             margin: 10px 0;
         }
-        
+
         .create-event-form {
             background: white;
             border-radius: var(--border-radius);
@@ -104,7 +105,7 @@ $totalParticipants = $db->querySingle("
             margin: 30px 0;
             box-shadow: var(--shadow);
         }
-        
+
         .form-tabs {
             display: flex;
             gap: 10px;
@@ -112,7 +113,7 @@ $totalParticipants = $db->querySingle("
             border-bottom: 2px solid #e2e8f0;
             padding-bottom: 15px;
         }
-        
+
         .tab {
             padding: 12px 24px;
             background: none;
@@ -124,25 +125,25 @@ $totalParticipants = $db->querySingle("
             color: var(--gray-color);
             transition: var(--transition);
         }
-        
+
         .tab.active {
             background: var(--primary-color);
             color: white;
         }
-        
+
         .event-actions {
             display: flex;
             gap: 10px;
             margin-top: 20px;
         }
-        
+
         .participants-list {
             background: #f8fafc;
             border-radius: 8px;
             padding: 15px;
             margin-top: 15px;
         }
-        
+
         .participant-item {
             display: flex;
             align-items: center;
@@ -150,23 +151,23 @@ $totalParticipants = $db->querySingle("
             padding: 10px;
             border-bottom: 1px solid #e2e8f0;
         }
-        
+
         .participant-item:last-child {
             border-bottom: none;
         }
-        
+
         .empty-state {
             text-align: center;
             padding: 40px;
             color: var(--gray-color);
         }
-        
+
         .empty-state i {
             font-size: 48px;
             margin-bottom: 15px;
             color: #e2e8f0;
         }
-        
+
         .event-status {
             padding: 6px 12px;
             border-radius: 20px;
@@ -175,11 +176,22 @@ $totalParticipants = $db->querySingle("
             display: inline-block;
             margin-left: 10px;
         }
-        
-        .status-upcoming { background: #dbeafe; color: #1d4ed8; }
-        .status-ongoing { background: #fef3c7; color: #d97706; }
-        .status-completed { background: #f3f4f6; color: #6b7280; }
-        
+
+        .status-upcoming {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status-ongoing {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-completed {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
         .qr-code {
             width: 100px;
             height: 100px;
@@ -190,7 +202,7 @@ $totalParticipants = $db->querySingle("
             justify-content: center;
             margin: 15px auto;
         }
-        
+
         .download-btn {
             background: #10b981;
             color: white;
@@ -203,13 +215,13 @@ $totalParticipants = $db->querySingle("
             align-items: center;
             gap: 8px;
         }
-        
+
         .date-picker {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
-        
+
         @media (max-width: 768px) {
             .date-picker {
                 grid-template-columns: 1fr;
@@ -217,6 +229,7 @@ $totalParticipants = $db->querySingle("
         }
     </style>
 </head>
+
 <body>
     <div class="container fade-in">
         <!-- Шапка панели организатора -->
@@ -231,12 +244,12 @@ $totalParticipants = $db->querySingle("
                     </p>
                 </div>
                 <div>
-                    <a href="index.php" class="btn btn-outline" style="background: rgba(255,255,255,0.1);">
+                    <a href="index.php" class="btn" style="background: rgba(255,255,255,0.2);">
                         <i class="fas fa-home"></i> На главную
                     </a>
                 </div>
             </div>
-            
+
             <!-- Статистика организатора -->
             <div class="organizer-stats">
                 <div class="organizer-stat">
@@ -266,7 +279,7 @@ $totalParticipants = $db->querySingle("
                 <i class="fas fa-check-circle"></i> <?= $success ?>
             </div>
         <?php endif; ?>
-        
+
         <?php if ($error): ?>
             <div class="alert alert-error">
                 <i class="fas fa-exclamation-circle"></i> <?= $error ?>
@@ -278,50 +291,49 @@ $totalParticipants = $db->querySingle("
             <h2 style="color: var(--primary-color); margin-bottom: 30px;">
                 <i class="fas fa-plus-circle"></i> Создать новое мероприятие
             </h2>
-            
+
             <form method="POST" id="createEventForm">
                 <input type="hidden" name="create_event" value="1">
-                
+
                 <div class="form-group">
                     <label class="form-label">Название мероприятия *</label>
-                    <input type="text" name="title" class="form-control" 
-                           placeholder="Введите название мероприятия" required>
+                    <input type="text" name="title" class="form-control" placeholder="Введите название мероприятия"
+                        required>
                 </div>
-                
+
                 <div class="form-group">
                     <label class="form-label">Описание</label>
-                    <textarea name="description" class="form-control" rows="4" 
-                              placeholder="Опишите детали мероприятия..."></textarea>
+                    <textarea name="description" class="form-control" rows="4"
+                        placeholder="Опишите детали мероприятия..."></textarea>
                 </div>
-                
+
                 <div class="date-picker">
                     <div class="form-group">
                         <label class="form-label">Дата проведения *</label>
-                        <input type="date" name="date" class="form-control" required
-                               min="<?= date('Y-m-d') ?>">
+                        <input type="date" name="date" class="form-control" required min="<?= date('Y-m-d') ?>">
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="form-label">Время *</label>
                         <input type="time" name="time" class="form-control" required>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label class="form-label">Место проведения *</label>
-                    <input type="text" name="location" class="form-control" 
-                           placeholder="Укажите адрес или онлайн-платформу" required>
+                    <input type="text" name="location" class="form-control"
+                        placeholder="Укажите адрес или онлайн-платформу" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label class="form-label">Максимальное количество участников</label>
-                    <input type="number" name="max_participants" class="form-control" 
-                           min="1" placeholder="Оставьте пустым для неограниченного количества">
+                    <input type="number" name="max_participants" class="form-control" min="1"
+                        placeholder="Оставьте пустым для неограниченного количества">
                     <div style="font-size: 12px; color: var(--gray-color); margin-top: 5px;">
                         <i class="fas fa-info-circle"></i> Необязательное поле
                     </div>
                 </div>
-                
+
                 <div style="display: flex; gap: 15px; margin-top: 30px;">
                     <button type="submit" class="btn" style="flex: 1;">
                         <i class="fas fa-calendar-plus"></i> Создать мероприятие
@@ -336,24 +348,24 @@ $totalParticipants = $db->querySingle("
         <!-- Мои мероприятия -->
         <div style="margin: 40px 0;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="color: var(--primary-color); margin: 0;">
+                <h2 style="color: white; margin: 0;">
                     <i class="fas fa-calendar"></i> Мои мероприятия
                 </h2>
                 <div style="color: var(--gray-color);">
                     <?= $totalEvents ?> мероприятий
                 </div>
             </div>
-            
+
             <?php if ($totalEvents > 0): ?>
                 <div class="grid">
-                    <?php while ($event = $myEvents->fetchArray(SQLITE3_ASSOC)): 
+                    <?php while ($event = $myEvents->fetchArray(SQLITE3_ASSOC)):
                         $eventDate = new DateTime($event['date'] . ' ' . $event['time']);
                         $now = new DateTime();
                         $daysDiff = $now->diff($eventDate)->days;
                         $isPast = $eventDate < $now;
                         $isFull = $event['max_participants'] && $event['registered'] >= $event['max_participants'];
                         $percentage = $event['max_participants'] ? round(($event['registered'] / $event['max_participants']) * 100) : 0;
-                        
+
                         // Определяем статус
                         if ($isPast) {
                             $status = 'completed';
@@ -366,9 +378,10 @@ $totalParticipants = $db->querySingle("
                             $statusText = 'Предстоит';
                         }
                         ?>
-                        
+
                         <div class="card">
-                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
                                 <h3 style="margin: 0; color: var(--primary-color);">
                                     <?= htmlspecialchars($event['title']) ?>
                                 </h3>
@@ -376,11 +389,11 @@ $totalParticipants = $db->querySingle("
                                     <?= $statusText ?>
                                 </span>
                             </div>
-                            
+
                             <p style="color: var(--dark-color); margin-bottom: 15px;">
                                 <?= htmlspecialchars($event['description']) ?>
                             </p>
-                            
+
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px 0;">
                                 <div style="background: rgba(67, 97, 238, 0.1); padding: 12px; border-radius: 8px;">
                                     <div style="font-size: 12px; color: var(--gray-color);">Дата</div>
@@ -395,15 +408,16 @@ $totalParticipants = $db->querySingle("
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div style="background: rgba(67, 97, 238, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0;">
-                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                                     <span style="font-weight: 600;">
                                         <i class="fas fa-map-marker-alt"></i> Место
                                     </span>
                                     <span><?= htmlspecialchars($event['location']) ?></span>
                                 </div>
-                                
+
                                 <?php if ($event['max_participants']): ?>
                                     <div style="margin: 10px 0;">
                                         <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
@@ -420,41 +434,28 @@ $totalParticipants = $db->querySingle("
                                     </div>
                                 <?php endif; ?>
                             </div>
-                            
+
                             <!-- Действия -->
-                            <div class="event-actions">
+                            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
                                 <?php if (!$isPast): ?>
-                                    <form action="send_notifications.php" method="POST" style="flex: 1;">
+                                    <form action="send_notifications.php" method="POST" style="flex: 1; min-width: 120px;">
                                         <input type="hidden" name="event_id" value="<?= $event['id'] ?>">
-                                        <button type="submit" class="btn" style="width: 100%;">
+                                        <button type="submit" class="btn" style="width: 100%; padding: 10px 12px; font-size: 14px;">
                                             <i class="fas fa-bell"></i> Уведомить
                                         </button>
                                     </form>
-                                    
-                                    <button class="btn btn-outline" onclick="editEvent(<?= $event['id'] ?>)" style="flex: 1;">
+
+                                    <button class="btn btn-outline" onclick="editEvent(<?= $event['id'] ?>)"
+                                        style="flex: 1; min-width: 120px; padding: 10px 12px; font-size: 14px;">
                                         <i class="fas fa-edit"></i> Редактировать
                                     </button>
                                 <?php endif; ?>
-                                
-                                <button class="btn btn-outline" onclick="showParticipants(<?= $event['id'] ?>)" style="flex: 1;">
+
+                                <button class="btn btn-outline" onclick="showParticipants(<?= $event['id'] ?>)"
+                                    style="flex: 1; min-width: 120px; padding: 10px 12px; font-size: 14px;">
                                     <i class="fas fa-users"></i> Участники
                                 </button>
                             </div>
-                            
-                            <!-- QR код для проверки -->
-                            <?php if (!$isPast): ?>
-                                <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
-                                    <div style="font-size: 12px; color: var(--gray-color); margin-bottom: 10px;">
-                                        QR код для быстрой регистрации
-                                    </div>
-                                    <div class="qr-code">
-                                        <i class="fas fa-qrcode" style="font-size: 40px; color: var(--gray-color);"></i>
-                                    </div>
-                                    <button class="download-btn" onclick="downloadQR(<?= $event['id'] ?>)">
-                                        <i class="fas fa-download"></i> Скачать QR
-                                    </button>
-                                </div>
-                            <?php endif; ?>
                         </div>
                     <?php endwhile; ?>
                 </div>
@@ -463,21 +464,14 @@ $totalParticipants = $db->querySingle("
                     <i class="fas fa-calendar-plus"></i>
                     <h3>У вас еще нет мероприятий</h3>
                     <p>Создайте свое первое мероприятие с помощью формы выше</p>
-                    <button class="btn" onclick="document.getElementById('createEventForm').scrollIntoView({behavior: 'smooth'})">
+                    <button class="btn"
+                        onclick="document.getElementById('createEventForm').scrollIntoView({behavior: 'smooth'})">
                         <i class="fas fa-plus"></i> Создать мероприятие
                     </button>
                 </div>
             <?php endif; ?>
         </div>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p>© 2024 EventManager - Панель организатора</p>
-            <p style="font-size: 12px; margin-top: 10px; opacity: 0.8;">
-                <i class="fas fa-user-tie"></i> Организатор: <?= htmlspecialchars($user['name']) ?>
-                | <i class="fas fa-envelope"></i> <?= htmlspecialchars($user['email']) ?>
-            </p>
-        </div>
     </div>
 
     <!-- Модальное окно для участников -->
@@ -498,12 +492,12 @@ $totalParticipants = $db->querySingle("
 
     <script>
         let currentEventId = null;
-        
+
         function showParticipants(eventId) {
             currentEventId = eventId;
             const modal = document.getElementById('participantsModal');
             const list = document.getElementById('participantsList');
-            
+
             // Здесь можно загрузить данные через AJAX
             // Для демонстрации покажем заглушку
             list.innerHTML = `
@@ -512,9 +506,9 @@ $totalParticipants = $db->querySingle("
                     <p>Загрузка списка участников...</p>
                 </div>
             `;
-            
+
             modal.style.display = 'flex';
-            
+
             // Симуляция загрузки данных
             setTimeout(() => {
                 list.innerHTML = `
@@ -555,36 +549,36 @@ $totalParticipants = $db->querySingle("
                 `;
             }, 1000);
         }
-        
+
         function closeModal() {
             document.getElementById('participantsModal').style.display = 'none';
         }
-        
+
         function editEvent(eventId) {
             alert(`Редактирование мероприятия ID: ${eventId}\nФункция в разработке`);
         }
-        
+
         function downloadQR(eventId) {
             alert(`Скачивание QR кода для мероприятия ID: ${eventId}\nФункция в разработке`);
         }
-        
+
         function exportParticipants(eventId) {
             alert(`Экспорт участников мероприятия ID: ${eventId}\nФункция в разработке`);
         }
-        
+
         // Закрытие модального окна по клику вне его
-        document.getElementById('participantsModal').addEventListener('click', function(e) {
+        document.getElementById('participantsModal').addEventListener('click', function (e) {
             if (e.target === this) {
                 closeModal();
             }
         });
-        
+
         // Настройка минимальной даты
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const dateInput = document.querySelector('input[name="date"]');
             const today = new Date().toISOString().split('T')[0];
             dateInput.min = today;
-            
+
             // Анимация карточек
             const cards = document.querySelectorAll('.card');
             cards.forEach((card, index) => {
@@ -593,4 +587,5 @@ $totalParticipants = $db->querySingle("
         });
     </script>
 </body>
+
 </html>

@@ -183,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="email" name="email" class="form-control" 
                                placeholder="Введите ваш email" required
                                style="padding-left: 45px;">
-                        <i class="fas fa-envelope" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--gray-color);"></i>
+                        <!-- <i class="fas fa-envelope" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--gray-color);"></i> -->
                     </div>
                 </div>
                 
@@ -193,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="password" name="password" id="password" 
                                class="form-control" placeholder="Введите ваш пароль" required
                                style="padding-left: 45px;">
-                        <i class="fas fa-lock" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--gray-color);"></i>
+                        <!-- <i class="fas fa-lock" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--gray-color);"></i> -->
                         <button type="button" class="toggle-password" onclick="togglePassword()">
                             <i class="fas fa-eye"></i>
                         </button>

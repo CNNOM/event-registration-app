@@ -282,7 +282,7 @@ $recommendedEvents = $db->query("
                     <div style="font-size: 14px; opacity: 0.9;">Посещенных</div>
                     <div class="profile-stat-number"><?= $completedEvents ?></div>
                 </div>
-                <div class="profile-stat">
+                <!-- <div class="profile-stat">
                     <div style="font-size: 14px; opacity: 0.9;">Уровень активности</div>
                     <div class="profile-stat-number">
                         <?php 
@@ -291,13 +291,13 @@ $recommendedEvents = $db->query("
                         echo min($activityLevel, 100);
                         ?>%
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
         <!-- Навигация -->
         <div style="display: flex; gap: 10px; margin-bottom: 30px;">
-            <a href="index.php" class="btn btn-outline">
+            <a href="index.php" class="btn">
                 <i class="fas fa-home"></i> На главную
             </a>
             <a href="#registrations" class="btn">
@@ -306,95 +306,15 @@ $recommendedEvents = $db->query("
             <a href="#recommended" class="btn">
                 <i class="fas fa-star"></i> Рекомендации
             </a>
-            <a href="#certificates" class="btn">
-                <i class="fas fa-award"></i> Достижения
-            </a>
-        </div>
-
-        <!-- Календарь мероприятий -->
-        <div class="calendar-view">
-            <div class="calendar-header">
-                <h3 style="margin: 0; color: var(--primary-color);">
-                    <i class="fas fa-calendar-alt"></i> Календарь мероприятий
-                </h3>
-                <div>
-                    <span style="color: var(--gray-color);"><?= date('F Y') ?></span>
-                </div>
-            </div>
-            
-            <div class="calendar-grid">
-                <div class="calendar-day">Пн</div>
-                <div class="calendar-day">Вт</div>
-                <div class="calendar-day">Ср</div>
-                <div class="calendar-day">Чт</div>
-                <div class="calendar-day">Пт</div>
-                <div class="calendar-day">Сб</div>
-                <div class="calendar-day">Вс</div>
-                
-                <?php
-                $today = date('j');
-                $daysInMonth = date('t');
-                $firstDay = date('N', strtotime(date('Y-m-01')));
-                
-                // Пустые ячейки до первого дня месяца
-                for ($i = 1; $i < $firstDay; $i++) {
-                    echo '<div class="calendar-cell"></div>';
-                }
-                
-                // Дни месяца
-                for ($day = 1; $day <= $daysInMonth; $day++) {
-                    $hasEvent = false;
-                    // Здесь можно проверить, есть ли мероприятия в этот день
-                    $isToday = $day == $today;
-                    $classes = 'calendar-cell';
-                    if ($isToday) $classes .= ' today';
-                    if ($hasEvent) $classes .= ' has-event';
-                    
-                    echo "<div class='{$classes}' onclick='showDayEvents({$day})'>{$day}</div>";
-                }
-                ?>
-            </div>
-        </div>
-
-        <!-- Достижения -->
-        <div class="achievements">
-            <div class="achievement">
-                <div class="achievement-icon">
-                    <i class="fas fa-fire"></i>
-                </div>
-                <div style="font-weight: 600; font-size: 14px;">Страсть к знаниям</div>
-                <div style="font-size: 12px; color: var(--gray-color);">Посетил 5+ мероприятий</div>
-            </div>
-            <div class="achievement">
-                <div class="achievement-icon">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <div style="font-weight: 600; font-size: 14px;">Быстрая регистрация</div>
-                <div style="font-size: 12px; color: var(--gray-color);">Регистрация за 24 часа до начала</div>
-            </div>
-            <div class="achievement">
-                <div class="achievement-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <div style="font-weight: 600; font-size: 14px;">Социальная активность</div>
-                <div style="font-size: 12px; color: var(--gray-color);">Привел 3+ друзей</div>
-            </div>
-            <div class="achievement">
-                <div class="achievement-icon">
-                    <i class="fas fa-calendar-star"></i>
-                </div>
-                <div style="font-weight: 600; font-size: 14px;">Постоянный участник</div>
-                <div style="font-size: 12px; color: var(--gray-color);">Участвует 3 месяца подряд</div>
-            </div>
         </div>
 
         <!-- Мои регистрации -->
         <div id="registrations" style="margin: 40px 0;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="color: var(--primary-color); margin: 0;">
+                <h2 style="color: white; margin: 0;">
                     <i class="fas fa-ticket-alt"></i> Мои регистрации
                 </h2>
-                <div style="color: var(--gray-color);">
+                <div style="color: white;">
                     <?= $totalRegistrations ?> мероприятий
                 </div>
             </div>
@@ -478,9 +398,9 @@ $recommendedEvents = $db->query("
                                         </button>
                                     </form>
                                     
-                                    <button class="btn btn-outline" onclick="addToCalendar(<?= $event['id'] ?>)" style="flex: 1;">
+                                    <!-- <button class="btn btn-outline" onclick="addToCalendar(<?= $event['id'] ?>)" style="flex: 1;">
                                         <i class="fas fa-calendar-plus"></i> В календарь
-                                    </button>
+                                    </button> -->
                                 </div>
                             <?php else: ?>
                                 <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
@@ -554,15 +474,6 @@ $recommendedEvents = $db->query("
             </div>
         <?php endif; ?>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p>© 2024 EventManager - Личный кабинет</p>
-            <p style="font-size: 12px; margin-top: 10px; opacity: 0.8;">
-                <i class="fas fa-user"></i> <?= htmlspecialchars($user['name']) ?>
-                | <i class="fas fa-calendar-alt"></i> <?= $totalRegistrations ?> мероприятий
-                | <i class="fas fa-trophy"></i> <?= $completedEvents ?> посещено
-            </p>
-        </div>
     </div>
 
     <script>

@@ -38,6 +38,15 @@ $db->exec("CREATE TABLE IF NOT EXISTS registrations (
 $adminExists = $db->querySingle("SELECT COUNT(*) FROM users WHERE email = 'admin@events.com'");
 if (!$adminExists) {
     $db->exec("INSERT INTO users (email, password, name, role) 
-               VALUES ('admin@events.com', '".password_hash('admin123', PASSWORD_DEFAULT)."', 'Администратор', 'admin')");
+               VALUES ('admin@events.com', '" . password_hash('admin123', PASSWORD_DEFAULT) . "', 'Администратор', 'admin')");
 }
+
+
+// $users = [
+//         ['email' => 'user1@example.com', 'password' => 'password123', 'name' => 'Иван Петров', 'role' => 'participant'],
+//         ['email' => 'user2@example.com', 'password' => 'password123', 'name' => 'Мария Сидорова', 'role' => 'participant'],
+//         ['email' => 'user3@example.com', 'password' => 'password123', 'name' => 'Алексей Иванов', 'role' => 'organizer'],
+//         ['email' => 'user4@example.com', 'password' => 'password123', 'name' => 'Екатерина Смирнова', 'role' => 'participant'],
+//         ['email' => 'user5@example.com', 'password' => 'password123', 'name' => 'Дмитрий Кузнецов', 'role' => 'organizer']
+//     ];
 ?>

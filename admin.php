@@ -142,7 +142,7 @@ $users = $db->query("SELECT * FROM users ORDER BY created_at DESC");
             </div>
 
             <div style="display: flex; gap: 20px; margin-top: 20px;">
-                <a href="index.php" class="btn btn-outline" style="background: rgba(255,255,255,0.1);">
+                <a href="index.php" class="btn " style="background: rgba(255,255,255,0.2);">
                     <i class="fas fa-home"></i> На главную
                 </a>
                 <a href="organizer.php" class="btn" style="background: rgba(255,255,255,0.2);">
@@ -252,7 +252,7 @@ $users = $db->query("SELECT * FROM users ORDER BY created_at DESC");
                         <th>Пользователь</th>
                         <th>Роль</th>
                         <th>Дата регистрации</th>
-                        <th>Статус</th>
+                        <!-- <th>Статус</th> -->
                         <th>Действия</th>
                     </tr>
                 </thead>
@@ -268,26 +268,44 @@ $users = $db->query("SELECT * FROM users ORDER BY created_at DESC");
                                 <div>
                                     <div style="font-weight: 600;"><?= htmlspecialchars($user['name']) ?></div>
                                     <div style="color: var(--gray-color); font-size: 14px;">
-                                        <?= htmlspecialchars($user['email']) ?></div>
+                                        <?= htmlspecialchars($user['email']) ?>
+                                    </div>
                                 </div>
                             </td>
                             <td>
                                 <span class="role-badge role-<?= $user['role'] ?>">
-                                    <?= $user['role'] ?>
+                                    <?php
+
+                                    $role_russian = '';
+                                    switch ($user['role']) {
+                                        case 'admin':
+                                            $role_russian = 'Администратор';
+                                            break;
+                                        case 'organizer':
+                                            $role_russian = 'Организатор';
+                                            break;
+                                        case 'participant':
+                                            $role_russian = 'Участник';
+                                            break;
+                                        default:
+                                            $role_russian = $user['role'];
+                                    }
+                                    ?>
+                                    <?= $role_russian ?>
                                 </span>
                             </td>
                             <td><?= date('d.m.Y H:i', strtotime($user['created_at'])) ?></td>
-                            <td>
+                            <!-- <td>
                                 <span class="status-dot status-active"></span>
                                 Активен
-                            </td>
+                            </td> -->
                             <td>
                                 <?php if ($user['role'] !== ROLE_ADMIN): ?>
                                     <div style="display: flex; gap: 10px;">
-                                        <button class="btn" style="padding: 8px 16px; font-size: 14px;"
+                                        <!-- <button class="btn" style="padding: 8px 16px; font-size: 14px;"
                                             onclick="editUser(<?= $user['id'] ?>)">
                                             <i class="fas fa-edit"></i>
-                                        </button>
+                                        </button> -->
                                         <a href="?delete_user=<?= $user['id'] ?>" class="btn btn-danger"
                                             style="padding: 8px 16px; font-size: 14px;"
                                             onclick="return confirm('Удалить пользователя <?= htmlspecialchars($user['name']) ?>?')">
@@ -367,15 +385,6 @@ $users = $db->query("SELECT * FROM users ORDER BY created_at DESC");
                     <?php endwhile; ?>
                 </tbody>
             </table>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <p>© 2024 EventManager Admin Panel v1.0</p>
-            <p style="font-size: 12px; margin-top: 10px; opacity: 0.8;">
-                <i class="fas fa-database"></i> Всего записей: <?= $usersCount + $eventsCount + $registrationsCount ?>
-                | <i class="fas fa-server"></i> Время работы: 24/7
-            </p>
         </div>
     </div>
 
